@@ -1,0 +1,348 @@
+/*
+ * Airwaves OS Flasher — design system
+ * Ported from the airwavesos.com "night-watch" aesthetic: ink-dark navy,
+ * amber beacon accent, an orange→magenta→violet brand gradient, Archivo +
+ * Instrument Serif + IBM Plex Mono, sharp corners, film grain + vignette.
+ *
+ * Tokens mirror www.airwavesos.com/styles/globals.css so the desktop app and
+ * the website read as one brand. Original CSS — referenced, not copied.
+ */
+
+/* ---- dark theme (default) ------------------------------------------------ */
+:root {
+  --bg: #070a10;
+  --bg-2: #0a0e16;
+  --panel: #0c111c;
+  --panel-2: #10162400;
+  --line: rgba(232, 224, 206, 0.1);
+  --line-strong: rgba(232, 224, 206, 0.22);
+  --cream: #ece5d6;
+  --cream-dim: #c4bfb2;
+  --muted: #8d93a2;
+  --amber: #ffa14f;
+  --amber-bright: #ffc372;
+  --ember: #ff6a3d;
+  --green: #59d98c;
+  --red: #ff5c5c;
+  --btn-ink: #16100a;
+
+  --nav-bg: rgba(7, 10, 16, 0.72);
+  --chip-bg: rgba(7, 10, 16, 0.35);
+  --footer-bg: #05070c;
+
+  --watermark-stroke: rgba(232, 224, 206, 0.12);
+  --wash: rgba(255, 161, 79, 0.06);
+  --vignette: rgba(0, 0, 0, 0.42);
+  --grain-o: 0.05;
+
+  --shadow-1: 0 30px 80px rgba(0, 0, 0, 0.45);
+  --shadow-2: 0 40px 100px rgba(0, 0, 0, 0.5);
+
+  --brand-grad: linear-gradient(115deg, #ffb347 0%, #fc4a67 52%, #8e54e9 100%);
+  --amber-glow: 0 0 0 1px rgba(255, 161, 79, 0.4), 0 0 28px rgba(255, 161, 79, 0.22);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --titlebar-h: 38px;
+
+  --font-sans: 'Archivo Variable', 'Archivo', system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  color-scheme: dark;
+}
+
+/* ---- light theme --------------------------------------------------------- */
+:root[data-theme='light'] {
+  --bg: #f4f0e6;
+  --bg-2: #ece7d9;
+  --panel: #fbf8f0;
+  --line: rgba(22, 29, 43, 0.12);
+  --line-strong: rgba(22, 29, 43, 0.28);
+  --cream: #161d2b;
+  --cream-dim: #3d4659;
+  --muted: #6d7484;
+  --amber: #cf6313;
+  --amber-bright: #ad4f08;
+  --ember: #d94a26;
+  --green: #18854b;
+  --red: #c23030;
+  --btn-ink: #fff8ef;
+
+  --nav-bg: rgba(244, 240, 230, 0.78);
+  --chip-bg: rgba(255, 253, 247, 0.5);
+  --footer-bg: #eae4d3;
+
+  --watermark-stroke: rgba(22, 29, 43, 0.16);
+  --wash: rgba(207, 99, 19, 0.07);
+  --vignette: rgba(124, 110, 86, 0.16);
+  --grain-o: 0.04;
+
+  --shadow-1: 0 24px 60px rgba(60, 56, 42, 0.16);
+  --shadow-2: 0 30px 80px rgba(60, 56, 42, 0.18);
+  --amber-glow: 0 0 0 1px rgba(207, 99, 19, 0.35), 0 0 24px rgba(207, 99, 19, 0.18);
+
+  color-scheme: light;
+}
+
+/* ---- reset --------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--cream);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow: hidden; /* the app shell owns scrolling */
+  user-select: none;
+  cursor: default;
+}
+
+::selection {
+  background: var(--amber);
+  color: var(--btn-ink);
+}
+
+a {
+  color: var(--amber);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--amber-bright);
+}
+
+/* ---- typography helpers -------------------------------------------------- */
+.mono {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum';
+}
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+.serif-em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--amber-bright);
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 740;
+  font-stretch: 118%;
+  letter-spacing: -0.012em;
+  line-height: 0.98;
+}
+
+/* ---- atmosphere: vignette + film grain ----------------------------------- */
+.atmosphere::before,
+.atmosphere::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+.atmosphere::before {
+  z-index: 55;
+  background: radial-gradient(
+    120% 95% at 50% 6%,
+    transparent 58%,
+    var(--vignette)
+  );
+}
+.atmosphere::after {
+  z-index: 56;
+  opacity: var(--grain-o);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+}
+
+/* ambient amber glow anchored bottom-right, echoing the site's beacon */
+.glow {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(50% 40% at 84% 96%, rgba(255, 116, 60, 0.16), transparent 70%),
+    radial-gradient(36% 30% at 12% 100%, rgba(255, 161, 79, 0.08), transparent 70%);
+}
+
+/* ---- scrollbars ---------------------------------------------------------- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: 99px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+  background-clip: padding-box;
+}
+
+/* ---- buttons ------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.4rem;
+  border: 1px solid var(--line-strong);
+  background: none;
+  color: var(--cream);
+  cursor: pointer;
+  transition: border-color 0.3s, background 0.3s, color 0.3s,
+    transform 0.3s var(--ease-out), box-shadow 0.3s;
+}
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.btn:not(:disabled):hover {
+  transform: translateY(-2px);
+}
+
+.btn--primary {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: var(--btn-ink);
+}
+.btn--primary:not(:disabled):hover {
+  background: var(--amber-bright);
+  border-color: var(--amber-bright);
+  box-shadow: var(--amber-glow);
+}
+
+.btn--ghost {
+  color: var(--cream-dim);
+}
+.btn--ghost:not(:disabled):hover {
+  border-color: var(--amber);
+  color: var(--amber-bright);
+}
+
+.btn--danger {
+  border-color: rgba(255, 92, 92, 0.5);
+  color: var(--red);
+}
+.btn--danger:not(:disabled):hover {
+  background: rgba(255, 92, 92, 0.12);
+  border-color: var(--red);
+}
+
+.btn .btn__arrow {
+  transition: transform 0.3s var(--ease-out);
+}
+.btn:not(:disabled):hover .btn__arrow {
+  transform: translateX(4px);
+}
+
+/* ---- surfaces ------------------------------------------------------------ */
+.panel {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.6rem;
+  border: 1px solid var(--line-strong);
+  background: var(--chip-bg);
+  color: var(--cream-dim);
+}
+
+/* status dot used in lists / live indicators */
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--muted);
+  flex: none;
+}
+.dot--live {
+  background: var(--green);
+  box-shadow: 0 0 0 0 rgba(89, 217, 140, 0.6);
+  animation: blink 2.4s var(--ease-out) infinite;
+}
+
+/* ---- reveal animation (staggered via --d) -------------------------------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+[data-reveal].is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(89, 217, 140, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(89, 217, 140, 0);
+  }
+}
+
+@keyframes sweep {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -180% 0;
+  }
+  100% {
+    background-position: 180% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
