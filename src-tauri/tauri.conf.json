@@ -1,0 +1,46 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Airwaves OS Flasher",
+  "version": "0.1.0",
+  "identifier": "com.airframes.airwavesflasher",
+  "build": {
+    "beforeDevCommand": "cargo build -p awflash-helper && pnpm dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "cargo build --release -p awflash-helper && pnpm build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Airwaves OS Flasher",
+        "width": 1040,
+        "height": 720,
+        "minWidth": 920,
+        "minHeight": 600,
+        "center": true,
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true,
+        "backgroundColor": "#070a10"
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; img-src 'self' asset: data:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self' ipc: http://ipc.localhost"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "category": "Utility",
+    "shortDescription": "Write Airwaves OS to SD cards and USB drives.",
+    "longDescription": "A simple, attractive cross-platform tool to download, write and verify Airwaves OS images for Raspberry Pi, Rock 5B, Orange Pi 5 and x86 PCs — and pre-configure WiFi, hostname, SSH and the update channel for headless first boot.",
+    "publisher": "Airframes",
+    "copyright": "© 2026 Airframes",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}
