@@ -1,0 +1,45 @@
+[package]
+name = "awflash-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Shared image-flashing engine for the Airwaves OS Flasher (catalog, enumerate, decompress, write, verify, customize)."
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+sha2.workspace = true
+
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "json", "stream", "blocking"] }
+futures-util = "0.3"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "io-util", "fs", "process", "time", "sync"] }
+
+# decompression — pure-Rust backends (no cmake/system libs) except liblzma(static)
+liblzma = { version = "0.3", features = ["static"] }
+flate2 = "1"
+zstd = "0.13"
+zip = { version = "2", default-features = false, features = ["deflate"] }
+
+# partition-table parsing + in-place FAT editing (no OS mount needed)
+gpt = "4"
+mbrman = "0.6"
+fatfs = "0.3"
+fscommon = "0.1"
+crc32fast = "1"
+
+[target.'cfg(unix)'.dependencies]
+nix = { version = "0.29", features = ["fs", "ioctl", "socket", "uio"] }
+libc = "0.2"
+
+[target.'cfg(target_os = "macos")'.dependencies]
+plist = "1"
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.59", features = [
+  "Win32_Foundation",
+  "Win32_Storage_FileSystem",
+  "Win32_System_IO",
+  "Win32_System_Ioctl",
+  "Win32_System_Threading",
+] }
